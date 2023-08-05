@@ -10,9 +10,7 @@ import {
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useState } from 'react';
-import { Feather, FontAwesome } from '@expo/vector-icons';
-
-// const BottomTab = createBottom;
+import { EvilIcons, FontAwesome } from '@expo/vector-icons';
 
 export const CreatePostsScreen = () => {
   const [uriImg, setUriImg] = useState(null);
@@ -33,7 +31,11 @@ export const CreatePostsScreen = () => {
           </View>
         )}
         {uriImg && <Text style={styles.text}>Редагувати фото</Text>}
-        {!uriImg && <Text style={styles.text}>Завантажте фото</Text>}
+        {!uriImg && (
+          <Text style={[styles.text, { textAlign: 'center' }]}>
+            Завантажте фото
+          </Text>
+        )}
         <View style={styles.inputBox}>
           <View style={styles.inputWrapper}>
             <TextInput
@@ -45,7 +47,7 @@ export const CreatePostsScreen = () => {
           </View>
 
           <View style={styles.inputWrapper}>
-            <Feather name="map-pin" size={24} color="#BDBDBD" />
+            <EvilIcons name="location" size={24} color="#BDBDBD" />
             <TextInput
               style={styles.input}
               placeholder="Місцевість..."
@@ -54,19 +56,19 @@ export const CreatePostsScreen = () => {
             />
           </View>
         </View>
-      </KeyboardAwareScrollView>
-      <Pressable
-        style={[styles.submitBtn, allFieldsFilled && styles.activeBtn]}
-      >
-        <Text
-          style={[styles.submitBtnText, allFieldsFilled && styles.textActive]}
+        <Pressable
+          style={[styles.submitBtn, allFieldsFilled && styles.activeBtn]}
         >
-          Опубліковати
-        </Text>
-      </Pressable>
+          <Text
+            style={[styles.submitBtnText, allFieldsFilled && styles.textActive]}
+          >
+            Опублікувати
+          </Text>
+        </Pressable>
+      </KeyboardAwareScrollView>
 
       <Pressable style={styles.resetBtn}>
-        <Feather name="trash-2" size={24} color="#BDBDBD" />
+        <EvilIcons name="trash" size={30} color="#BDBDBD" />
       </Pressable>
     </View>
   );
@@ -76,9 +78,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    paddingLeft: 16,
-    paddingRight: 16,
+    paddingHorizontal: 16,
     paddingTop: 32,
+    paddingBottom: 34,
   },
   imageWrapper: {
     height: 240,
@@ -126,6 +128,7 @@ const styles = StyleSheet.create({
     height: 50,
     fontSize: 16,
     color: '#212121',
+    paddingLeft: 8,
   },
   submitBtn: {
     alignItems: 'center',

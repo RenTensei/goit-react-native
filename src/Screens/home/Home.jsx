@@ -6,17 +6,18 @@ import { TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { CreatePostsScreen } from './CreatePostsScreen';
+import { CommentsScreen } from './CommentsScreen';
 
 const BottomTab = createBottomTabNavigator();
 
 export const Home = () => {
-  const { navigate, goBack } = useNavigation();
+  const { navigate, canGoBack, goBack } = useNavigation();
 
   const goBackButton = () => (
     <TouchableOpacity
       style={{ marginLeft: 16 }}
       hitSlop={{ left: 16, right: 32 }}
-      onPress={goBack}
+      onPress={canGoBack() ? goBack : () => navigate(AppRoutes.POSTS)}
     >
       <Feather name="arrow-left" size={24} color="#171717" />
     </TouchableOpacity>
@@ -30,7 +31,7 @@ export const Home = () => {
 
   return (
     <BottomTab.Navigator
-      initialRouteName={AppRoutes.CREATE_POSTS}
+      initialRouteName={AppRoutes.COMMENTS}
       screenOptions={{
         tabBarStyle: {
           height: 84,
@@ -68,10 +69,22 @@ export const Home = () => {
         options={{
           title: 'Створити публікацію',
           tabBarStyle: {
-            height: 0,
+            display: 'none',
           },
           headerLeft: goBackButton,
           tabBarIcon: ({ color }) => <Feather name="plus" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name={AppRoutes.COMMENTS}
+        component={CommentsScreen}
+        options={{
+          title: 'Коментарі',
+          headerLeft: goBackButton,
+          tabBarButton: () => null,
+          tabBarStyle: {
+            display: 'none',
+          },
         }}
       />
     </BottomTab.Navigator>
