@@ -7,14 +7,10 @@ import { Feather } from '@expo/vector-icons';
 export const MapScreen = () => {
   const navigation = useNavigation();
   const { canGoBack, goBack, navigate } = navigation;
-  // const {
-  //   params: {
-  //     postLocation: { longitude, latitude },
-  //   },
-  // } = useRoute();
 
-  let longitude;
-  let latitude;
+  const {
+    params: { latitude, longitude },
+  } = useRoute();
 
   useLayoutEffect(() => {
     navigation.setOptions({

@@ -9,12 +9,63 @@ import {
   StyleSheet,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { EvilIcons, FontAwesome } from '@expo/vector-icons';
+import * as Location from 'expo-location';
+import * as ImagePicker from 'expo-image-picker';
+import * as MediaLibrary from 'expo-media-library';
+
+import AppRoutes from '../../enums/AppRoutes';
 
 export const CreatePostsScreen = () => {
   const [uriImg, setUriImg] = useState(null);
-  const allFieldsFilled = false;
+  const [title, setTitle] = useState('');
+  const [location, setLocation] = useState('');
+  const canSubmitPost = title && uriImg !== false;
+
+  const { navigate } = useNavigation();
+
+  const handleTakePhoto = async () => {
+    // на емуляторі/симуляторі камера не працює,
+    // нажаль на моб.пристрої також нема можливості перевірити
+    // const response = ImagePicker.launchCameraAsync();
+    try {
+      const libraryPerm = await MediaLibrary.requestPermissionsAsync();
+      if (!libraryPerm.granted) {
+        throw new Error('Permission to camera was denied!');
+      }
+
+      const { canceled, assets } = await ImagePicker.launchImageLibraryAsync();
+      if (!canceled) {
+        await MediaLibrary.createAssetAsync(assets[0].uri);
+        setUriImg(assets[0].uri);
+      }
+    } catch (error) {
+      alert(error.message || 'something went wrong, try again!');
+    }
+  };
+
+  const getLocation = async () => {
+    const locationPerm = await Location.requestForegroundPermissionsAsync();
+    if (!locationPerm.granted) {
+      throw new Error('Permission to location was denied!');
+    }
+
+    const {
+      coords: { latitude, longitude },
+    } = await Location.getCurrentPositionAsync({
+      accuracy: Location.LocationAccuracy.Low,
+    });
+
+    return `${latitude} / ${longitude}`;
+  };
+
+  const handleSubmitPost = async () => {
+    if (!location) setLocation(await getLocation());
+    console.log({ title, location: location ? location : await getLocation() });
+    navigate(AppRoutes.POSTS);
+  };
 
   return (
     <View style={styles.container}>
@@ -24,18 +75,15 @@ export const CreatePostsScreen = () => {
         ) : (
           <View style={styles.imageWrapper}>
             <View style={styles.photoView}>
-              <Pressable style={styles.cameraBtn}>
+              <Pressable style={styles.cameraBtn} onPress={handleTakePhoto}>
                 <FontAwesome name="camera" size={24} color="#BDBDBD" />
               </Pressable>
             </View>
           </View>
         )}
-        {uriImg && <Text style={styles.text}>Редагувати фото</Text>}
-        {!uriImg && (
-          <Text style={[styles.text, { textAlign: 'center' }]}>
-            Завантажте фото
-          </Text>
-        )}
+
+        <Text style={styles.text}>Завантажте фото</Text>
+
         <View style={styles.inputBox}>
           <View style={styles.inputWrapper}>
             <TextInput
@@ -43,6 +91,8 @@ export const CreatePostsScreen = () => {
               placeholder="Назва..."
               placeholderTextColor="#BDBDBD"
               inputMode="text"
+              onChangeText={s => setTitle(s)}
+              value={title}
             />
           </View>
 
@@ -53,21 +103,31 @@ export const CreatePostsScreen = () => {
               placeholder="Місцевість..."
               placeholderTextColor="#BDBDBD"
               inputMode="text"
+              onChangeText={s => setLocation(s)}
+              value={location}
             />
           </View>
         </View>
         <Pressable
-          style={[styles.submitBtn, allFieldsFilled && styles.activeBtn]}
+          style={[styles.submitBtn, canSubmitPost && styles.activeBtn]}
+          onPress={canSubmitPost ? handleSubmitPost : null}
         >
           <Text
-            style={[styles.submitBtnText, allFieldsFilled && styles.textActive]}
+            style={[styles.submitBtnText, canSubmitPost && styles.textActive]}
           >
             Опублікувати
           </Text>
         </Pressable>
       </KeyboardAwareScrollView>
 
-      <Pressable style={styles.resetBtn}>
+      <Pressable
+        style={styles.resetBtn}
+        onPress={() => {
+          setUriImg(null);
+          setTitle('');
+          setLocation('');
+        }}
+      >
         <EvilIcons name="trash" size={30} color="#BDBDBD" />
       </Pressable>
     </View>
@@ -109,6 +169,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   text: {
+    textAlign: 'center',
     marginTop: 8,
     color: '#BDBDBD',
     fontSize: 16,

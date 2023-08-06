@@ -13,7 +13,6 @@ export const PostItem = ({ post }) => {
 
   const { navigate } = useNavigation();
   const isAnyComment = comments.length > 0;
-  // const isAnyLike = likes > 0;
 
   return (
     <View style={styles.postItem}>
@@ -57,7 +56,7 @@ export const PostItem = ({ post }) => {
 
         <TouchableOpacity
           style={styles.statItem}
-          // onPress={() => navigation('', { postLocation: location })}
+          onPress={() => navigate(AppRoutes.MAP, location)}
         >
           <Feather name="map-pin" size={24} color="#5c5c5c" />
           <Text style={[styles.statText, styles.underline]}>{place}</Text>
