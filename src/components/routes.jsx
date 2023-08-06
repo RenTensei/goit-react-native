@@ -8,10 +8,27 @@ import { RegistrationScreen } from '../Screens/auth/RegistrationScreen';
 import { CreatePostsScreen } from '../Screens/home/CreatePostsScreen';
 import { PostsScreen } from '../Screens/home/PostsScreen';
 import { Home } from '../Screens/home/Home';
+import { useDispatch, useSelector } from 'react-redux';
+import AuthActions from '../store/auth/authActions';
+import { useEffect } from 'react';
+import { selectIsLoggedIn } from '../store/auth/authSelectors';
+import { useNavigation } from '@react-navigation/native';
 
 const Stack = createStackNavigator();
 
 export default Routes = () => {
+  const { navigate } = useNavigation();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+
+  useEffect(() => {
+    console.log(isLoggedIn);
+    if (!isLoggedIn) {
+      navigate(AppRoutes.LOGIN);
+    } else {
+      navigate(AppRoutes.HOME);
+    }
+  }, [isLoggedIn]);
+
   return (
     <Stack.Navigator initialRouteName={AppRoutes.LOGIN}>
       <Stack.Screen

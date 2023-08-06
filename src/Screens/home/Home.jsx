@@ -9,17 +9,23 @@ import { CreatePostsScreen } from './CreatePostsScreen';
 import { CommentsScreen } from './CommentsScreen';
 import { ProfileScreen } from './ProfileScreen';
 import { MapScreen } from './MapScreen';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectIsLoggedIn } from '../../store/auth/authSelectors';
+import { useEffect } from 'react';
+import AuthActions from '../../store/auth/authActions';
 
 const BottomTab = createBottomTabNavigator();
 
 export const Home = () => {
   const { navigate, canGoBack, goBack } = useNavigation();
 
+  // const isLoggedIn = useSelector(selectIsLoggedIn);
+  const dispatch = useDispatch();
+
   const goBackButton = () => (
     <TouchableOpacity
       style={{ marginLeft: 16 }}
       hitSlop={{ left: 16, right: 32 }}
-      // onPress={canGoBack() ? goBack : () => navigate(AppRoutes.POSTS)}
       onPress={() => navigate(AppRoutes.POSTS)}
     >
       <Feather name="arrow-left" size={24} color="#171717" />
@@ -29,7 +35,7 @@ export const Home = () => {
   const logOutButton = () => (
     <TouchableOpacity
       style={{ padding: 10 }}
-      onPress={() => navigate(AppRoutes.LOGIN)}
+      onPress={() => dispatch(AuthActions.logOut())}
     >
       <Feather name="log-out" size={24} color="#cbcdcf" />
     </TouchableOpacity>

@@ -13,7 +13,7 @@ export const FormInputs = ({
       <Controller
         control={control}
         name="email"
-        // rules={{ required: true }}
+        rules={{ required: true }}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <View>
             <TextInput
@@ -37,7 +37,7 @@ export const FormInputs = ({
       <Controller
         control={control}
         name="password"
-        // rules={{ required: true }}
+        rules={{ required: true }}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <View>
             <TextInput

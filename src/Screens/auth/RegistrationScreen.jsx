@@ -11,7 +11,7 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -23,12 +23,23 @@ import { FormInputs } from '../../components/FormInputs';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useNavigation } from '@react-navigation/native';
 import AppRoutes from '../../enums/AppRoutes';
+import { useDispatch, useSelector } from 'react-redux';
+import AuthActions from '../../store/auth/authActions';
+import { selectIsLoggedIn } from '../../store/auth/authSelectors';
 
 export const RegistrationScreen = () => {
   const [userIconUri, setUserIconUri] = useState(null);
   const [focusedField, setFocusedField] = useState(false);
 
-  const navigation = useNavigation();
+  const { navigate } = useNavigation();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate(AppRoutes.HOME);
+    }
+  }, [isLoggedIn]);
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -38,8 +49,16 @@ export const RegistrationScreen = () => {
     },
   });
 
-  const onSubmit = data => {
-    console.log(data);
+  const onSubmit = formdata => {
+    // console.log(formdata);
+    dispatch(
+      AuthActions.register({
+        email: formdata.email,
+        password: formdata.password,
+        name: formdata.login,
+        userIconUri,
+      })
+    );
   };
 
   const selectIcon = async () => {
@@ -131,7 +150,7 @@ export const RegistrationScreen = () => {
 
           <TouchableOpacity
             style={styles.secondaryBtn}
-            onPress={() => navigation.navigate(AppRoutes.LOGIN)}
+            onPress={() => navigate(AppRoutes.LOGIN)}
           >
             <Text style={styles.secondaryBtnText}>Вже є акаунт? Увійти</Text>
           </TouchableOpacity>
