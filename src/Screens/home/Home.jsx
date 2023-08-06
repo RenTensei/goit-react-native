@@ -19,7 +19,8 @@ export const Home = () => {
     <TouchableOpacity
       style={{ marginLeft: 16 }}
       hitSlop={{ left: 16, right: 32 }}
-      onPress={canGoBack() ? goBack : () => navigate(AppRoutes.POSTS)}
+      // onPress={canGoBack() ? goBack : () => navigate(AppRoutes.POSTS)}
+      onPress={() => navigate(AppRoutes.POSTS)}
     >
       <Feather name="arrow-left" size={24} color="#171717" />
     </TouchableOpacity>
@@ -36,7 +37,7 @@ export const Home = () => {
 
   return (
     <BottomTab.Navigator
-      initialRouteName={AppRoutes.COMMENTS}
+      initialRouteName={AppRoutes.POSTS}
       screenOptions={{
         tabBarStyle: {
           height: 84,

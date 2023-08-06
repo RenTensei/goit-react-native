@@ -1,4 +1,5 @@
 export default AppRoutes = {
+  HOME: 'Home',
   POSTS: 'Posts',
   CREATE_POSTS: 'CreatePosts',
   COMMENTS: 'Comments',

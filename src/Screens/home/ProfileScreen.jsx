@@ -15,10 +15,14 @@ import addIconBtnImg from '../../images/add.png';
 // mock
 import posts from '../../mock/posts';
 import { PostItem } from '../../components/PostItem';
+import { Feather } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 export const ProfileScreen = () => {
   // selector in future
   const avatarURL = null;
+
+  const { navigate } = useNavigation();
 
   return (
     <ImageBackground style={styles.mountainsBgImage} source={mountainsImg}>
@@ -38,6 +42,14 @@ export const ProfileScreen = () => {
               />
             </View>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{ position: 'absolute', top: 22, right: 16 }}
+            onPress={() => navigate(AppRoutes.LOGIN)}
+          >
+            <Feather name="log-out" size={24} color="#cbcdcf" />
+          </TouchableOpacity>
+
           <Text style={styles.userName}>Natali Natali</Text>
           <View style={styles.postsList}>
             {posts.map(post => (

@@ -36,6 +36,7 @@ export const LoginScreen = () => {
 
   const onSubmit = data => {
     console.log(data);
+    navigation.navigate(AppRoutes.HOME);
   };
 
   return (
@@ -56,7 +57,7 @@ export const LoginScreen = () => {
             style={styles.primaryBtn}
             onPress={handleSubmit(onSubmit)}
           >
-            <Text style={styles.primaryBtnText}>Зареєструватися</Text>
+            <Text style={styles.primaryBtnText}>Увійти</Text>
           </TouchableOpacity>
 
           <TouchableOpacity

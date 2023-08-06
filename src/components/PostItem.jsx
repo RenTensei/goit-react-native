@@ -11,7 +11,7 @@ import AppRoutes from '../enums/AppRoutes';
 export const PostItem = ({ post }) => {
   const { id, image, name, comments, likes, place, location } = post;
 
-  const { navigation } = useNavigation();
+  const { navigate } = useNavigation();
   const isAnyComment = comments.length > 0;
   // const isAnyLike = likes > 0;
 
@@ -26,7 +26,7 @@ export const PostItem = ({ post }) => {
         <View style={styles.statistics}>
           <TouchableOpacity
             style={styles.statItem}
-            onPress={() => navigation(AppRoutes.COMMENTS, { postId: id })}
+            onPress={() => navigate(AppRoutes.COMMENTS, { postId: id })}
           >
             <MaterialIcons
               name={isAnyComment ? 'comment' : 'add-comment'}
