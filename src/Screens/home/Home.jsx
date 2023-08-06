@@ -1,12 +1,14 @@
+import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Feather } from '@expo/vector-icons';
+
 import AppRoutes from '../../enums/AppRoutes';
 import { PostsScreen } from './PostsScreen';
-import { TouchableOpacity } from 'react-native';
-
-import { Feather } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import { CreatePostsScreen } from './CreatePostsScreen';
 import { CommentsScreen } from './CommentsScreen';
+import { ProfileScreen } from './ProfileScreen';
+import { MapScreen } from './MapScreen';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -24,7 +26,10 @@ export const Home = () => {
   );
 
   const logOutButton = () => (
-    <TouchableOpacity style={{ padding: 10 }}>
+    <TouchableOpacity
+      style={{ padding: 10 }}
+      onPress={() => navigate(AppRoutes.LOGIN)}
+    >
       <Feather name="log-out" size={24} color="#cbcdcf" />
     </TouchableOpacity>
   );
@@ -60,7 +65,9 @@ export const Home = () => {
         options={{
           title: 'Публікації',
           headerRight: logOutButton,
-          tabBarIcon: ({ color }) => <Feather name="grid" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Feather name="grid" color={color} size={20} />
+          ),
         }}
       />
       <BottomTab.Screen
@@ -72,7 +79,19 @@ export const Home = () => {
             display: 'none',
           },
           headerLeft: goBackButton,
-          tabBarIcon: ({ color }) => <Feather name="plus" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <Feather name="plus" color={color} size={22} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name={AppRoutes.PROFILE}
+        component={ProfileScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <Feather name="user" color={color} size={20} />
+          ),
         }}
       />
       <BottomTab.Screen
@@ -80,6 +99,18 @@ export const Home = () => {
         component={CommentsScreen}
         options={{
           title: 'Коментарі',
+          headerLeft: goBackButton,
+          tabBarButton: () => null,
+          tabBarStyle: {
+            display: 'none',
+          },
+        }}
+      />
+      <BottomTab.Screen
+        name={AppRoutes.MAP}
+        component={MapScreen}
+        options={{
+          title: 'Геолокація',
           headerLeft: goBackButton,
           tabBarButton: () => null,
           tabBarStyle: {

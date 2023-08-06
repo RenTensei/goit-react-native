@@ -9,8 +9,11 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import { PostItem } from '../../components/PostItem';
 
 import currentUserPic from '../../images/currentUserPic.png';
+
+import posts from '../../mock/posts';
 
 export const PostsScreen = () => {
   return (
@@ -23,9 +26,9 @@ export const PostsScreen = () => {
         </View>
       </View>
       <View style={styles.postsList}>
-        {/* {posts.map(post => {
+        {posts.map(post => {
           return <PostItem key={post.id} post={post} />;
-        })} */}
+        })}
       </View>
     </ScrollView>
   );

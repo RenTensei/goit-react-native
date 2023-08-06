@@ -13,7 +13,9 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import defaultPhoto from '../../images/sunset.png';
 import { Ionicons } from '@expo/vector-icons';
 
-const currentPost = { comments: [] };
+import posts from '../../mock/posts';
+import { CommentItem } from '../../components/CommentItem';
+const currentPost = posts[1];
 
 export const CommentsScreen = () => {
   const [photoPath, setPhotoPath] = useState(null);
@@ -32,13 +34,13 @@ export const CommentsScreen = () => {
         contentContainerStyle={styles.container}
         scrollEnabled={false}
       >
-        <View style={{ paddingBottom: 32, flex: 1 }}>
+        <View style={{ /* paddingBottom: 32,*/ flex: 1 }}>
           <ScrollView>
             {commentsAvailable ? (
               <View style={styles.commentsList}>
-                {/* {currentPost.comments.map(comment => (
-              <CommentItem key={comment.id} comment={comment} />
-            ))} */}
+                {currentPost.comments.map(comment => (
+                  <CommentItem key={comment.id} comment={comment} />
+                ))}
               </View>
             ) : (
               <Text style={styles.infoForUser}>В коментарях пусто!</Text>
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
   },
   commentsList: {
     rowGap: 24,
-    paddingVertical: 32,
+    // paddingBottom: 32,
   },
   photoWrapper: {
     paddingTop: 32,
