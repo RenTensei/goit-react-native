@@ -14,15 +14,23 @@ import addIconBtnImg from '../../images/add.png';
 
 // mock
 import posts from '../../mock/posts';
+
 import { PostItem } from '../../components/PostItem';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUserName } from '../../store/auth/authSelectors';
+import AuthActions from '../../store/auth/authActions';
 
 export const ProfileScreen = () => {
-  // selector in future
+  // TODO: edit avatar
   const avatarURL = null;
 
+  const userName = useSelector(selectUserName);
+
   const { navigate } = useNavigation();
+
+  const dispatch = useDispatch();
 
   return (
     <ImageBackground style={styles.mountainsBgImage} source={mountainsImg}>
@@ -45,12 +53,12 @@ export const ProfileScreen = () => {
 
           <TouchableOpacity
             style={{ position: 'absolute', top: 22, right: 16 }}
-            onPress={() => navigate(AppRoutes.LOGIN)}
+            onPress={() => dispatch(AuthActions.logOut())}
           >
             <Feather name="log-out" size={24} color="#cbcdcf" />
           </TouchableOpacity>
 
-          <Text style={styles.userName}>Natali Natali</Text>
+          <Text style={styles.userName}>{userName}</Text>
           <View style={styles.postsList}>
             {posts.map(post => (
               <PostItem key={post.id} post={post} />

@@ -22,7 +22,7 @@ export const CreatePostsScreen = () => {
   const [uriImg, setUriImg] = useState(null);
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
-  const canSubmitPost = title && uriImg !== false;
+  const canSubmitPost = title && uriImg;
 
   const { navigate } = useNavigation();
 

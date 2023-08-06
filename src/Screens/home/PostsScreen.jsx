@@ -14,15 +14,19 @@ import { PostItem } from '../../components/PostItem';
 import currentUserPic from '../../images/currentUserPic.png';
 
 import posts from '../../mock/posts';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../store/auth/authSelectors';
 
 export const PostsScreen = () => {
+  const { name, email } = useSelector(selectUser);
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.profile}>
         <Image source={currentUserPic} style={styles.userImage} />
         <View>
-          <Text style={styles.userLogin}>Natali Romanova</Text>
-          <Text style={styles.userEmail}>email@example.com</Text>
+          <Text style={styles.userLogin}>{name}</Text>
+          <Text style={styles.userEmail}>{email}</Text>
         </View>
       </View>
       <View style={styles.postsList}>

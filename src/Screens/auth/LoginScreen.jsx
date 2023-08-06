@@ -12,20 +12,25 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { styles } from '../styleSheet';
 import mountainsImg from '../../images/mountains.png';
 import { FormInputs } from '../../components/FormInputs';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import AppRoutes from '../../enums/AppRoutes';
+import AuthActions from '../../store/auth/authActions';
+import { selectIsLoggedIn } from '../../store/auth/authSelectors';
 
 export const LoginScreen = () => {
   const [focusedField, setFocusedField] = useState(false);
 
-  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const { navigate } = useNavigation();
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -34,9 +39,16 @@ export const LoginScreen = () => {
     },
   });
 
-  const onSubmit = data => {
-    console.log(data);
-    navigation.navigate(AppRoutes.HOME);
+  useEffect(() => {
+    console.log(isLoggedIn);
+    if (isLoggedIn) {
+      navigate(AppRoutes.HOME);
+    }
+  }, [isLoggedIn]);
+
+  const onSubmit = formdata => {
+    console.log(formdata);
+    dispatch(AuthActions.logIn(formdata));
   };
 
   return (
@@ -62,7 +74,7 @@ export const LoginScreen = () => {
 
           <TouchableOpacity
             style={styles.secondaryBtn}
-            onPress={() => navigation.navigate(AppRoutes.REGISTRATION)}
+            onPress={() => navigate(AppRoutes.REGISTRATION)}
           >
             <Text style={styles.secondaryBtnText}>
               Немає акаунту?{' '}
