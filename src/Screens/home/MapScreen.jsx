@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { View, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Feather } from '@expo/vector-icons';
 
 export const MapScreen = () => {
@@ -30,6 +30,7 @@ export const MapScreen = () => {
     <View style={styles.container}>
       <MapView
         style={styles.map}
+        provider={PROVIDER_GOOGLE}
         mapType="standard"
         region={{
           latitude,
